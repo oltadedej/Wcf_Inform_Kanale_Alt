@@ -13,6 +13,7 @@ namespace WcfInformatike
     [ServiceContract]
     public interface IService1
     {
+        #region Sync Methods
 
         [OperationContract]
         [WebInvoke(Method = "GET",
@@ -36,35 +37,39 @@ namespace WcfInformatike
        UriTemplate = "Post")]
         string Post(PhoneBookModel model);
 
+        #endregion
+
+
+        #region  Async Region
+
+
+        [OperationContractAttribute(AsyncPattern = true)]
+        IAsyncResult BeginGetPhoneBookList(AsyncCallback callback, object asyncState);
+
+        //Note: There is no OperationContractAttribute for the end method.
+        Output EndGetPhoneBookList(IAsyncResult result);
+
+
+        [OperationContractAttribute(AsyncPattern = true)]
+        IAsyncResult BeginGetById(long id,AsyncCallback callback, object asyncState);
+
+        //Note: There is no OperationContractAttribute for the end method.
+        Output EndGetById(IAsyncResult result);
+
+        [OperationContractAttribute(AsyncPattern = true)]
+        IAsyncResult BeginInsert(PhoneBookModel model, AsyncCallback callback, object asyncState);
+
+        //Note: There is no OperationContractAttribute for the end method.
+        Output EndInsert(IAsyncResult result);
 
 
 
-        [OperationContract]
-        CompositeType GetDataUsingDataContract(CompositeType composite);
 
-        // TODO: Add your service operations here
+        #endregion
+
+
+
     }
 
 
-    // Use a data contract as illustrated in the sample below to add composite types to service operations.
-    [DataContract]
-    public class CompositeType
-    {
-        bool boolValue = true;
-        string stringValue = "Hello ";
-
-        [DataMember]
-        public bool BoolValue
-        {
-            get { return boolValue; }
-            set { boolValue = value; }
-        }
-
-        [DataMember]
-        public string StringValue
-        {
-            get { return stringValue; }
-            set { stringValue = value; }
-        }
-    }
 }
